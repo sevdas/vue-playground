@@ -1,12 +1,17 @@
 <script setup lang="ts">
-import type { Slot } from 'vue'
+interface ButtonProps {
+  isDisabled?: boolean
+  loading?: boolean
+}
 
-defineProps<{ children: Slot; onClick: () => void; required: true }>()
-defineEmits(['onClick'])
+defineProps<ButtonProps>()
 </script>
 
 <template>
-  <button @onClick="$emit('onClick')">{{ children }}</button>
+  <button @click="$emit('onClick')" :disabled="isDisabled">
+    <p v-if="loading">...Loading</p>
+    <slot v-else />
+  </button>
 </template>
 
 <style scoped lang="scss"></style>
