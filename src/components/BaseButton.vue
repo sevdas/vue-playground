@@ -9,7 +9,7 @@ defineProps<ButtonProps>()
 
 <template>
   <button @click="$emit('onClick')" :disabled="isDisabled">
-    <p v-if="loading">...Loading</p>
+    <slot name="loading" v-if="loading">...Loading</slot>
     <slot v-else />
   </button>
 </template>
