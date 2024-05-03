@@ -39,7 +39,7 @@ defineProps<ButtonProps>()
     color: #181818;
 
     & svg {
-      fill: #919191;
+      fill: #181818;
     }
   }
 

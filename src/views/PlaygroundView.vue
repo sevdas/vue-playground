@@ -27,17 +27,21 @@ setTimeout(() => {
   <main>
     <h1>This is a playground page</h1>
 
-    <BaseButton @on-click="handleClick" :aria-label="`Clicked ${count} times`" :loading="loading"
-      >Count is: {{ count }}</BaseButton
-    >
+    <BaseButton @on-click="handleClick" :aria-label="`Clicked ${count} times`" :loading="loading">
+      Count is: {{ count }}
+    </BaseButton>
 
-    <BaseButton @on-click="clear" :loading="loading">Clear</BaseButton>
+    <BaseButton @on-click="clear" :loading="loading">
+      Clear
+    </BaseButton>
 
     <BaseButton aria-label="Hexagonal icon" :loading="loading">
       <EcosystemIcon />
     </BaseButton>
 
-    <BaseButton :isDisabled="true">Disabled Button</BaseButton>
+    <BaseButton :isDisabled="true">
+      Disabled Button
+    </BaseButton>
   </main>
 </template>
 
