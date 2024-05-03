@@ -2,6 +2,8 @@
 import EcosystemIcon from '../components/icons/IconEcosystem.vue'
 import BaseButton from '../components/BaseButton.vue'
 import { ref, onMounted } from 'vue'
+import { gqlClient } from '@/api/contentful/client/Client';
+import {getAllBrands} from "@/api/contentful/queries/AllBrands"
 
 const count = ref(0)
 const loading = ref(false)
@@ -14,13 +16,18 @@ const clear = () => {
   count.value = 0
 }
 
-onMounted(() => {
+onMounted(async () => {
+  const contentfulResponse = await gqlClient(getAllBrands, { preview: false });
   loading.value = true
+
+  console.log({contentfulResponse})
 })
 
 setTimeout(() => {
   loading.value = false
 }, 2000)
+
+
 </script>
 
 <template>
@@ -56,3 +63,9 @@ setTimeout(() => {
 </style>
 
 <!-- add integration test? -->
+<!-- plan what to build -->
+<!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
+<!-- env variables in Vue-->
+<!-- Content Type ( what you wanna build? - tennis balls brands ) -->
+<!-- Label and Input Components -->
+<!-- shopping card - global - pinia -->
