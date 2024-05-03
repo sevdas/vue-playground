@@ -34,7 +34,7 @@ setTimeout(() => {
   <main>
     <h1>This is a playground page</h1>
 
-    <BaseButton @on-click="handleClick" :aria-label="`Clicked ${count} times`" :loading="loading">
+    <BaseButton @onClick="handleClick" :aria-label="`Clicked ${count} times`" :loading="loading">
       Count is: {{ count }}
     </BaseButton>
 
@@ -62,10 +62,11 @@ setTimeout(() => {
 }
 </style>
 
-<!-- add integration test? -->
-<!-- plan what to build -->
-<!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
+
+
 <!-- env variables in Vue-->
+<!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
 <!-- Content Type ( what you wanna build? - tennis balls brands ) -->
-<!-- Label and Input Components -->
 <!-- shopping card - global - pinia -->
+<!-- Label and Input Components -->
+<!-- add integration test? -->

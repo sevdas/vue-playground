@@ -15,16 +15,17 @@ defineProps<ButtonProps>()
 </template>
 
 <style scoped lang="scss">
+@import "@/styles/global/_base.scss";
 .button {
   display: flex;
   align-items: center;
   appearance: none;
   cursor: pointer;
-  border: 1px solid #00bd7e;
+  border: 1px solid $mainBrand;
   border-radius: 0.25rem;
-  color: #00bd7e;
+  color: $mainBrand;
   padding: 1rem 2rem;
-  background-color: #181818;
+  background-color: $mainBrandBlack;
   transition: all 0.15s ease-in-out;
   font-size: 1rem;
   line-height: 1.5;
@@ -34,33 +35,33 @@ defineProps<ButtonProps>()
   }
 
   &:hover {
-    border-color: #00bd7e;
-    background-color: #00bd7e;
-    color: #181818;
+    border-color: $mainBrand;
+    background-color: $mainBrand;
+    color: $mainBrandBlack;
 
     & svg {
-      fill: #181818;
+      fill: $mainBrandBlack;
     }
   }
 
   &:active {
-    border-color: #006946;
-    background-color: #006946;
-    color: #181818;
+    border-color: $mainBrandActive;
+    background-color: $mainBrandActive;
+    color: $mainBrandBlack;
 
     & svg {
-      fill: #181818;
+      fill: $mainBrandBlack;
     }
   }
 
   &:disabled {
-    border-color: #c8c8c8;
-    background-color: #c8c8c8;
-    color: #919191;
+    border-color: $mainBrandDisabled;
+    background-color: $mainBrandDisabled;
+    color: $mainBrandDisabledText;
     cursor: not-allowed;
 
     & svg {
-      fill: #919191;
+      fill: $mainBrandDisabledText;
     }
   }
 
