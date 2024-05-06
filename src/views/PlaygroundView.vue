@@ -69,7 +69,7 @@ onBeforeMount(async () => {
 </style>
 
 <!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
-<!-- Adding button variants -->
+<!-- Adding button variants with predefined defaults-->
 
 <!-- Content Type ( what you wanna build? - tennis balls brands ) -->
 <!-- shopping card - global - pinia -->

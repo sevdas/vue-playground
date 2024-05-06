@@ -18,6 +18,8 @@
   background-color: $black;
   color: $primary-brand;
 
+  // https://stackoverflow.com/questions/37263821/css-buttonfocus
+
   &:hover {
     border-color: $primary-brand-hover;
     background-color: $primary-brand-hover;

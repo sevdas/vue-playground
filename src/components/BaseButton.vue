@@ -19,14 +19,17 @@ const sizeClasses: Record<ButtonsSize, string> = {
   md: 'medium'
 }
 
-defineProps<ButtonProps>()
+withDefaults(defineProps<ButtonProps>(), {
+  variant: 'primary',
+  size: 'sm'
+})
 </script>
 
 <template>
   <button
     @click="$emit('onClick')"
     :disabled="isDisabled"
-    :class="['button', variant && variantClasses[variant], size && sizeClasses[size]]"
+    :class="['button', variantClasses[variant], sizeClasses[size]]"
   >
     <slot name="loading" v-if="loading">...Loading</slot>
     <slot v-else />
@@ -37,8 +40,6 @@ defineProps<ButtonProps>()
 @import '@/styles/global/_base.scss';
 .button {
   @include button;
-
-  // https://stackoverflow.com/questions/37263821/css-buttonfocus
 }
 
 .primary {
