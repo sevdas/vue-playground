@@ -15,74 +15,74 @@
 
 @mixin buttonPrimary {
   border-color: $primary-brand;
-  background-color: $primary-brand-black;
+  background-color: $black;
   color: $primary-brand;
 
   &:hover {
-    border-color: $primary-brand;
-    background-color: $primary-brand;
-    color: $primary-brand-black;
+    border-color: $primary-brand-hover;
+    background-color: $primary-brand-hover;
+    color: $black;
 
     & svg {
-      fill: $primary-brand-black;
+      fill: $black;
     }
   }
 
   &:active {
     border-color: $primary-brand-active;
     background-color: $primary-brand-active;
-    color: $primary-brand-black;
+    color: $black;
 
     & svg {
-      fill: $primary-brand-black;
+      fill: $black;
     }
   }
 
   &:disabled {
-    border-color: $primary-brand-disabled;
-    background-color: $primary-brand-disabled;
-    color: $primary-brand-disabled-text;
+    border-color: $disabled;
+    background-color: $disabled;
+    color: $disabled-text;
     cursor: not-allowed;
 
     & svg {
-      fill: $primary-brand-disabled-text;
+      fill: $disabled-text;
     }
   }
 }
 
 @mixin buttonSecondary {
   border-color: $secondary-brand;
-  background-color: $secondary-brand-black;
+  background-color: $black;
   color: $secondary-brand;
 
   &:hover {
-    border-color: $secondary-brand;
-    background-color: $secondary-brand;
-    color: $white;
+    border-color: $secondary-brand-hover;
+    background-color: $secondary-brand-hover;
+    color: $black;
 
     & svg {
-      fill: $white;
+      fill: $black;
     }
   }
 
   &:active {
     border-color: $secondary-brand-active;
     background-color: $secondary-brand-active;
-    color: $white;
+    color: $black;
 
     & svg {
-      fill: $white;
+      fill: $black;
     }
   }
 
   &:disabled {
-    border-color: $secondary-brand-disabled;
-    background-color: $secondary-brand-disabled;
-    color: $secondary-brand-disabled-text;
+    border-color: $disabled;
+    background-color: $disabled;
+    color: $disabled-text;
     cursor: not-allowed;
 
     & svg {
-      fill: $secondary-brand-disabled-text;
+      fill: $disabled-text;
     }
   }
 }
