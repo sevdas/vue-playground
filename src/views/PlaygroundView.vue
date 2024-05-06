@@ -64,8 +64,8 @@ setTimeout(() => {
 
 
 
-<!-- env variables in Vue-->
 <!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
+<!-- Adding variant -->
 <!-- Content Type ( what you wanna build? - tennis balls brands ) -->
 <!-- shopping card - global - pinia -->
 <!-- Label and Input Components -->
