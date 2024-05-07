@@ -4,8 +4,11 @@ import BaseButton from '../components/BaseButton.vue'
 import { ref, onBeforeMount } from 'vue'
 import { gqlClient } from '@/api/contentful/client/Client'
 import { getAllBrands } from '@/api/contentful/queries/AllBrands'
+import BaseLabel from '@/components/BaseLabel.vue'
+import BaseInput from '@/components/BaseInput.vue'
 
 const count = ref(0)
+const searchedValue = ref('')
 const loading = ref(true)
 
 const handleClick = () => {
@@ -33,6 +36,12 @@ onBeforeMount(async () => {
       <main>
         <h1>This is a playground page</h1>
 
+        <BaseLabel :isOptional="true" html-id-for="inputId">
+          Hello, I am an optional label
+        </BaseLabel>
+
+        <BaseLabel html-id-for="inputId"> Hello, I am just a label</BaseLabel>
+
         <BaseButton
           @onClick="handleClick"
           :aria-label="`Clicked ${count} times`"
@@ -51,7 +60,21 @@ onBeforeMount(async () => {
           <EcosystemIcon />
         </BaseButton>
 
-        <BaseButton :isDisabled="true"> Disabled Button </BaseButton>
+        <BaseButton :is-disabled="true"> Disabled Button </BaseButton>
+
+        <form>
+          <BaseLabel :isOptional="true" html-id-for="formId">Form Label</BaseLabel>
+          <p>{{ searchedValue }}</p>
+          <BaseInput
+            id="formId"
+            name="formValueKey"
+            :modelValue="searchedValue"
+            type="search"
+            placeholder="Search..."
+            @update:modelValue="(newValue) => (searchedValue = newValue)"
+          />
+          <BaseButton type="submit">Submit Button</BaseButton>
+        </form>
       </main>
     </template>
     <template #fallback>...Loading</template>
@@ -69,7 +92,6 @@ onBeforeMount(async () => {
 </style>
 
 <!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
-<!-- Adding button variants with predefined defaults-->
 
 <!-- Content Type ( what you wanna build? - tennis balls brands ) -->
 <!-- shopping card - global - pinia -->
