@@ -1,7 +1,12 @@
 <script setup lang="ts">
+import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
+
 interface InputProps {
   id: string
   placeholder?: string
+  isOptional: boolean
+  label: string
+  ssrLabel: boolean
 }
 
 const modelValue = defineModel({ required: true })
@@ -10,6 +15,7 @@ defineProps<InputProps>()
 </script>
 
 <template>
+  <BaseLabel :id="id" :isOptional="isOptional" :ssrLabel="ssrLabel">{{ label }}</BaseLabel>
   <input
     :placeholder="placeholder"
     :value="modelValue"

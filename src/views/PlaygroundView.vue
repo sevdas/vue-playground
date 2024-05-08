@@ -38,10 +38,6 @@ onBeforeMount(async () => {
       <main>
         <h1>This is a playground page</h1>
 
-        <BaseLabel :isOptional="true" id="inputId"> Hello, I am an optional label </BaseLabel>
-
-        <BaseLabel id="inputId"> Hello, I am just a label</BaseLabel>
-
         <BaseButton
           @onClick="handleClick"
           :aria-label="`Clicked ${count} times`"
@@ -62,14 +58,18 @@ onBeforeMount(async () => {
 
         <BaseButton :is-disabled="true"> Disabled Button </BaseButton>
 
+        <BaseLabel :isOptional="true" id="formId" :ssrLabel="true">
+          My label is only accessible to the screen readers
+        </BaseLabel>
+
         <form>
-          <BaseLabel :isOptional="true" id="formId">Form Label</BaseLabel>
           <p>{{ searchedValue }}</p>
           <SearchInput
             id="formId"
             :modelValue="searchedValue"
             type="search"
             placeholder="Search..."
+            ssrLabel="true"
             @update:modelValue="(newValue) => (searchedValue = newValue)"
           />
 
@@ -79,7 +79,7 @@ onBeforeMount(async () => {
             v-model="textValue"
             label="I am a Text Input"
             type="text"
-            :isOptional="false"
+            :isOptional="true"
             placeholder="Type something..."
           />
 

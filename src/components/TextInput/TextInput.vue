@@ -6,6 +6,7 @@ interface InputProps {
   placeholder?: string
   label: string
   isOptional: boolean
+  ssrLabel: boolean
 }
 
 const model = defineModel({ required: true }) // value and change handler
@@ -14,7 +15,7 @@ defineProps<InputProps>()
 </script>
 
 <template>
-  <BaseLabel :id="id" :isOptional="isOptional">{{ label }}</BaseLabel>
+  <BaseLabel :id="id" :isOptional="isOptional" :ssrLabel="ssrLabel">{{ label }}</BaseLabel>
   <input :placeholder="placeholder" :id="id" :name="id" v-model="model" class="input" />
 </template>
 
@@ -37,6 +38,10 @@ defineProps<InputProps>()
 
   input[type='search']::-webkit-search-cancel-button {
     filter: grayscale(1);
+  }
+
+  .ssrLabel {
+    display: none;
   }
 }
 </style>
