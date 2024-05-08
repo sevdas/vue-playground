@@ -1,22 +1,21 @@
 <script setup lang="ts">
+import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
+
 interface InputProps {
   id: string
-  name: string
   placeholder?: string
+  label: string
+  isOptional: boolean
 }
 
-const modelValue = defineModel({ required: true })
+const model = defineModel({ required: true }) // value and change handler
 
 defineProps<InputProps>()
 </script>
 
 <template>
-  <input
-    :placeholder="placeholder"
-    :value="modelValue"
-    @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
-    class="input"
-  />
+  <BaseLabel :id="id" :isOptional="isOptional">{{ label }}</BaseLabel>
+  <input :placeholder="placeholder" :id="id" :name="id" v-model="model" class="input" />
 </template>
 
 <style scoped lang="scss">

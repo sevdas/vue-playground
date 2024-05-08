@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import EcosystemIcon from '../components/icons/IconEcosystem.vue'
-import BaseButton from '../components/BaseButton.vue'
+import EcosystemIcon from '@/components/icons/IconEcosystem.vue'
+import BaseButton from '@/components/BaseButton/BaseButton.vue'
 import { ref, onBeforeMount } from 'vue'
 import { gqlClient } from '@/api/contentful/client/Client'
 import { getAllBrands } from '@/api/contentful/queries/AllBrands'
 import BaseLabel from '@/components/BaseLabel.vue'
-import BaseInput from '@/components/BaseInput.vue'
+import SearchInput from '@/components/SearchInput.vue'
+import TextInput from '@/components/TextInput.vue'
 
 const count = ref(0)
 const searchedValue = ref('')
+const textValue = ref('')
 const loading = ref(true)
 
 const handleClick = () => {
@@ -36,11 +38,9 @@ onBeforeMount(async () => {
       <main>
         <h1>This is a playground page</h1>
 
-        <BaseLabel :isOptional="true" html-id-for="inputId">
-          Hello, I am an optional label
-        </BaseLabel>
+        <BaseLabel :isOptional="true" id="inputId"> Hello, I am an optional label </BaseLabel>
 
-        <BaseLabel html-id-for="inputId"> Hello, I am just a label</BaseLabel>
+        <BaseLabel id="inputId"> Hello, I am just a label</BaseLabel>
 
         <BaseButton
           @onClick="handleClick"
@@ -63,16 +63,26 @@ onBeforeMount(async () => {
         <BaseButton :is-disabled="true"> Disabled Button </BaseButton>
 
         <form>
-          <BaseLabel :isOptional="true" html-id-for="formId">Form Label</BaseLabel>
+          <BaseLabel :isOptional="true" id="formId">Form Label</BaseLabel>
           <p>{{ searchedValue }}</p>
-          <BaseInput
+          <SearchInput
             id="formId"
-            name="formValueKey"
             :modelValue="searchedValue"
             type="search"
             placeholder="Search..."
             @update:modelValue="(newValue) => (searchedValue = newValue)"
           />
+
+          <p>{{ textValue }}</p>
+          <TextInput
+            id="textFormId"
+            v-model="textValue"
+            label="I am a Text Input"
+            type="text"
+            :isOptional="false"
+            placeholder="Type something..."
+          />
+
           <BaseButton type="submit">Submit Button</BaseButton>
         </form>
       </main>
@@ -97,3 +107,4 @@ onBeforeMount(async () => {
 <!-- shopping card - global - pinia -->
 <!-- Label and Input Components -->
 <!-- add integration test? -->
+<!-- add eslint rule for folder import order -->

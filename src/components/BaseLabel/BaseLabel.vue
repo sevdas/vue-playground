@@ -1,6 +1,6 @@
 <script setup lang="ts">
 interface LabelProps {
-  htmlIdFor: string
+  id: string
   isOptional?: boolean
 }
 
@@ -8,7 +8,7 @@ defineProps<LabelProps>()
 </script>
 
 <template>
-  <label :for="htmlIdFor" class="label">
+  <label :for="id" class="label">
     <slot />
     <span v-if="isOptional">&nbsp;(Optional)</span>
   </label>

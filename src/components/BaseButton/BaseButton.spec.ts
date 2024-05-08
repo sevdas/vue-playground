@@ -1,7 +1,7 @@
 import { describe, it, expect } from 'vitest'
 
 import { mount } from '@vue/test-utils'
-import BaseButton from '../BaseButton.vue'
+import BaseButton from './BaseButton.vue'
 
 describe('BaseButton', () => {
   it('renders properly', () => {
@@ -21,7 +21,7 @@ describe('BaseButton', () => {
     const wrapper = mount(BaseButton, { props: { isDisabled: true } })
 
     const buttonElement = wrapper.find('button')
-    expect(buttonElement.attributes()).toHaveProperty('disabled');
+    expect(buttonElement.attributes()).toHaveProperty('disabled')
   })
 
   it('emits a click event properly', async () => {
@@ -30,6 +30,6 @@ describe('BaseButton', () => {
     const buttonElement = wrapper.find('button')
     await buttonElement.trigger('click')
 
-    expect(wrapper.emitted('onClick')).toBeTruthy();
+    expect(wrapper.emitted('onClick')).toBeTruthy()
   })
 })

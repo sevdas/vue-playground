@@ -37,7 +37,7 @@ withDefaults(defineProps<ButtonProps>(), {
 </template>
 
 <style scoped lang="scss">
-@import '@/styles/global/_base.scss';
+@import './BaseButton';
 .button {
   @include button;
 }
