@@ -4,9 +4,9 @@ import BaseButton from '@/components/BaseButton/BaseButton.vue'
 import { ref, onBeforeMount } from 'vue'
 import { gqlClient } from '@/api/contentful/client/Client'
 import { getAllBrands } from '@/api/contentful/queries/AllBrands'
-import BaseLabel from '@/components/BaseLabel.vue'
-import SearchInput from '@/components/SearchInput.vue'
-import TextInput from '@/components/TextInput.vue'
+import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
+import SearchInput from '@/components/SearchInput/SearchInput.vue'
+import TextInput from '@/components/TextInput/TextInput.vue'
 
 const count = ref(0)
 const searchedValue = ref('')
