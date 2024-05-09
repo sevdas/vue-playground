@@ -4,8 +4,8 @@ import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
 interface InputProps {
   id: string
   placeholder?: string
-  isOptional: boolean
-  label: string
+  isOptional?: boolean
+  label?: string
   ssrLabel: boolean
 }
 
@@ -15,7 +15,9 @@ defineProps<InputProps>()
 </script>
 
 <template>
-  <BaseLabel :id="id" :isOptional="isOptional" :ssrLabel="ssrLabel">{{ label }}</BaseLabel>
+  <BaseLabel :id="id" :isOptional="isOptional" :ssrLabel="ssrLabel">
+    <slot v-if="label" />
+  </BaseLabel>
   <input
     :placeholder="placeholder"
     :value="modelValue"

@@ -1,17 +1,18 @@
 <script setup lang="ts">
 import EcosystemIcon from '@/components/icons/IconEcosystem.vue'
 import BaseButton from '@/components/BaseButton/BaseButton.vue'
-import { ref, onBeforeMount } from 'vue'
-import { gqlClient } from '@/api/contentful/client/Client'
-import { getAllBrands } from '@/api/contentful/queries/AllBrands'
+import { ref, onBeforeMount, onMounted } from 'vue'
 import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
 import SearchInput from '@/components/SearchInput/SearchInput.vue'
 import TextInput from '@/components/TextInput/TextInput.vue'
 
+import { useArtworksStore } from '@/stores/artworks'
+
+const artworksStore = useArtworksStore()
+
 const count = ref(0)
 const searchedValue = ref('')
 const textValue = ref('')
-const loading = ref(true)
 
 const handleClick = () => {
   count.value++
@@ -21,14 +22,10 @@ const clear = () => {
   count.value = 0
 }
 
-onBeforeMount(async () => {
-  try {
-    await gqlClient(getAllBrands, { preview: false })
-  } catch (error) {
-    console.error('Error fetching data:', error)
-  } finally {
-    loading.value = false
-  }
+// page's loading state?!
+
+onMounted(async () => {
+  await artworksStore.fetchArtworks()
 })
 </script>
 
@@ -38,21 +35,22 @@ onBeforeMount(async () => {
       <main>
         <h1>This is a playground page</h1>
 
+        <p>{{ artworksStore.loading }}</p>
+        <p>{{ artworksStore.total }}</p>
+
         <BaseButton
           @onClick="handleClick"
           :aria-label="`Clicked ${count} times`"
-          :loading="loading"
+          :loading="false"
           variant="primary"
           size="sm"
         >
           Count is: {{ count }}
         </BaseButton>
 
-        <BaseButton @on-click="clear" :loading="loading" variant="secondary" size="md">
-          Clear
-        </BaseButton>
+        <BaseButton @on-click="clear" variant="secondary" size="md"> Clear </BaseButton>
 
-        <BaseButton aria-label="Hexagonal icon" :loading="loading">
+        <BaseButton aria-label="Hexagonal icon">
           <EcosystemIcon />
         </BaseButton>
 

@@ -6,7 +6,7 @@ interface InputProps {
   placeholder?: string
   label: string
   isOptional: boolean
-  ssrLabel: boolean
+  ssrLabel?: boolean
 }
 
 const model = defineModel({ required: true }) // value and change handler
