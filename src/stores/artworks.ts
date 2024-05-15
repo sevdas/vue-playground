@@ -75,7 +75,7 @@ export const useArtworksStore = defineStore('artworks', {
 
         // Filter out fulfilled promises and extract their values
         const values = allArtworkDetailsResponse
-          .filter((result) => result.status === 'fulfilled')
+          .filter(({ status }) => status === 'fulfilled')
           .map(({ value }) => value)
 
         this.artworkDetails = values
