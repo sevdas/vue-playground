@@ -16,7 +16,7 @@ const textValue = ref('')
 
 const loading = ref(true)
 
-const allDepartments = ref([])
+// const allDepartments = ref([])
 
 const handleClick = () => {
   count.value++
@@ -30,8 +30,10 @@ onMounted(async () => {
   await artworksStore.fetchArtworks()
   await artworksStore.fetchAllArtworkDetails()
 
-  const departments = artworksStore.artworkDetails.map(({ department }) => department)
-  allDepartments.value = [...new Set(departments)]
+  console.log('dep', artworksStore.allDepartments)
+
+  // const departments = artworksStore.artworkDetails.map(({ department }) => department)
+  // allDepartments.value = [...new Set(departments)]
 
   loading.value = false // use reactive load instead of global shared loading ?
 })
@@ -45,8 +47,8 @@ onMounted(async () => {
   <main v-else>
     <h1>This is a playground page</h1>
 
-    <ul v-if="allDepartments.length > 0">
-      <li v-for="department in allDepartments" :key="department">
+    <ul v-if="artworksStore.allDepartments.length > 0">
+      <li v-for="department in artworksStore.allDepartments" :key="department">
         <router-link :to="`/playground/${department}`">{{ department }}</router-link>
       </li>
     </ul>

@@ -28,6 +28,20 @@ export const useArtworksStore = defineStore('artworks', {
     }
   },
 
+  // getters:
+  //   allDepartments() {
+  //     const departments = this.artworkDetails.map(({ department }) => department)
+  //     return [...new Set(departments)]
+  //   }
+  // },
+
+  getters: {
+    allDepartments: (state) => {
+      const departments = state.artworkDetails.map(({ department }) => department)
+      return [...new Set(departments)]
+    }
+  },
+
   actions: {
     async fetchArtworks() {
       try {
