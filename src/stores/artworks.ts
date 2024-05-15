@@ -1,34 +1,47 @@
 import { defineStore } from 'pinia'
+import { MMABasePath } from '@/api/apiPaths'
+
+interface Collection {
+  objectIDs: number[]
+  total: number
+}
+
+interface Artwork {
+  department: string
+  title: string
+  culture: string
+  // ... etc
+}
 
 interface ArtworkCollection {
-  collectionIds: number[]
-  total: number
+  collection: Collection[]
+  artworkDetails: Artwork[]
   loading: boolean
 }
 
 export const useArtworksStore = defineStore('artworks', {
   state: (): ArtworkCollection => {
     return {
-      collectionIds: [],
-      total: 0,
+      collection: [],
+      artworkDetails: [],
       loading: false
     }
   },
 
   actions: {
     async fetchArtworks() {
-      console.log('Fetching artworks...')
       try {
         this.loading = true
-        const response = await fetch(
-          'https://collectionapi.metmuseum.org/public/collection/v1/objects?departmentIds=10|14|21'
-        )
+        const response = await fetch(`${MMABasePath}?departmentIds=10|14|21`)
 
         if (response?.ok) {
-          const artworkCollection = await response.json()
+          const collection = await response.json()
 
-          this.collectionIds = artworkCollection.objectIDs
-          this.total = artworkCollection.total
+          const limit = 50
+
+          const limitedCollectionIds = collection.objectIDs.slice(0, limit)
+          this.collection.objectIDs = limitedCollectionIds
+          this.collection.total = limitedCollectionIds.length
         }
       } catch (error) {
         console.error('Error fetching artworks:', error)
@@ -36,22 +49,44 @@ export const useArtworksStore = defineStore('artworks', {
       } finally {
         this.loading = false
       }
+    },
+
+    async fetchAllArtworkDetails() {
+      try {
+        this.loading = true
+
+        const allCollectionIds = this.collection.objectIDs
+
+        const allArtworkDetailsResponse = await Promise.allSettled(
+          allCollectionIds.map(async (id) => {
+            try {
+              const response = await fetch(`${MMABasePath}/${id}`)
+
+              if (response.ok) {
+                return await response.json()
+              } else {
+                console.error(`Failed to fetch artwork details for ID: ${id}`)
+              }
+            } catch (error) {
+              console.error('Error fetching artwork details:', error)
+            }
+          })
+        )
+
+        // Filter out fulfilled promises and extract their values
+        const values = allArtworkDetailsResponse
+          .filter((result) => result.status === 'fulfilled')
+          .map(({ value }) => value)
+
+        this.artworkDetails = values
+      } catch (error) {
+        console.error('Error fetching artwork details:', error)
+        throw new Error('Failed to fetch artwork details')
+      } finally {
+        this.loading = false
+      }
     }
   }
 })
 
-//   const limitedArtIds = artworkCollection.objectIDs.slice(
-//     artworkCollection.total - 100,
-//     artworkCollection.total
-//   )
-
-//   const limitedArtCollection = {
-//     objectIDs: limitedArtIds,
-//     total: limitedArtIds.length
-//   }
-
-//   console.log(limitedArtCollection?.total)
-//   console.log(limitedArtCollection?.objectIDs)
-
-//   this.this.total = limitedArtCollection.total
-//   this.paramIds = limitedArtCollection.objectIDs
+// for (const objectId of this.collectionIds) {}

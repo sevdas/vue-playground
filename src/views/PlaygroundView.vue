@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import EcosystemIcon from '@/components/icons/IconEcosystem.vue'
 import BaseButton from '@/components/BaseButton/BaseButton.vue'
-import { ref, onBeforeMount, onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import BaseLabel from '@/components/BaseLabel/BaseLabel.vue'
 import SearchInput from '@/components/SearchInput/SearchInput.vue'
 import TextInput from '@/components/TextInput/TextInput.vue'
@@ -14,6 +14,10 @@ const count = ref(0)
 const searchedValue = ref('')
 const textValue = ref('')
 
+const loading = ref(true)
+
+const allDepartments = ref([])
+
 const handleClick = () => {
   count.value++
 }
@@ -22,72 +26,84 @@ const clear = () => {
   count.value = 0
 }
 
-// page's loading state?!
-
 onMounted(async () => {
   await artworksStore.fetchArtworks()
+  await artworksStore.fetchAllArtworkDetails()
+
+  const departments = artworksStore.artworkDetails.map(({ department }) => department)
+  allDepartments.value = [...new Set(departments)]
+
+  loading.value = false // use reactive load instead of global shared loading ?
 })
 </script>
 
 <template>
-  <Suspense>
-    <template #default>
-      <main>
-        <h1>This is a playground page</h1>
+  <!-- <Suspense>
+    <template #default> -->
 
-        <p>{{ artworksStore.loading }}</p>
-        <p>{{ artworksStore.total }}</p>
+  <div v-if="loading">Loading...</div>
+  <main v-else>
+    <h1>This is a playground page</h1>
 
-        <BaseButton
-          @onClick="handleClick"
-          :aria-label="`Clicked ${count} times`"
-          :loading="false"
-          variant="primary"
-          size="sm"
-        >
-          Count is: {{ count }}
-        </BaseButton>
+    <ul v-if="allDepartments.length > 0">
+      <li v-for="department in allDepartments" :key="department">
+        <router-link :to="`/playground/${department}`">{{ department }}</router-link>
+      </li>
+    </ul>
+    <p v-else>No departments available</p>
 
-        <BaseButton @on-click="clear" variant="secondary" size="md"> Clear </BaseButton>
+    <BaseButton
+      @onClick="handleClick"
+      :aria-label="`Clicked ${count} times`"
+      :loading="false"
+      variant="primary"
+      size="sm"
+    >
+      Count is: {{ count }}
+    </BaseButton>
 
-        <BaseButton aria-label="Hexagonal icon">
-          <EcosystemIcon />
-        </BaseButton>
+    <BaseButton @on-click="clear" variant="secondary" size="md" :loading="artworksStore.loading">
+      Clear
+    </BaseButton>
 
-        <BaseButton :is-disabled="true"> Disabled Button </BaseButton>
+    <BaseButton aria-label="Hexagonal icon">
+      <EcosystemIcon />
+    </BaseButton>
 
-        <BaseLabel :isOptional="true" id="formId" :ssrLabel="true">
-          My label is only accessible to the screen readers
-        </BaseLabel>
+    <BaseButton :is-disabled="true"> Disabled Button </BaseButton>
 
-        <form>
-          <p>{{ searchedValue }}</p>
-          <SearchInput
-            id="formId"
-            :modelValue="searchedValue"
-            type="search"
-            placeholder="Search..."
-            ssrLabel="true"
-            @update:modelValue="(newValue) => (searchedValue = newValue)"
-          />
+    <BaseLabel :isOptional="true" id="formId" :ssrLabel="true">
+      My label is only accessible to the screen readers
+    </BaseLabel>
 
-          <p>{{ textValue }}</p>
-          <TextInput
-            id="textFormId"
-            v-model="textValue"
-            label="I am a Text Input"
-            type="text"
-            :isOptional="true"
-            placeholder="Type something..."
-          />
+    <form>
+      <p>{{ searchedValue }}</p>
+      <SearchInput
+        id="formId"
+        :modelValue="searchedValue"
+        type="search"
+        placeholder="Search..."
+        ssrLabel="true"
+        @update:modelValue="(newValue) => (searchedValue = newValue)"
+      />
 
-          <BaseButton type="submit">Submit Button</BaseButton>
-        </form>
-      </main>
-    </template>
-    <template #fallback>...Loading</template>
-  </Suspense>
+      <p>{{ textValue }}</p>
+      <TextInput
+        id="textFormId"
+        v-model="textValue"
+        label="I am a Text Input"
+        type="text"
+        :isOptional="true"
+        placeholder="Type something..."
+      />
+
+      <BaseButton type="submit">Submit Button</BaseButton>
+    </form>
+  </main>
 </template>
+<!-- <template #fallback>Loading...</template>
+  </Suspense>
+</template> -->
 
 <style>
 @media (min-width: 1024px) {
@@ -99,10 +115,7 @@ onMounted(async () => {
 }
 </style>
 
-<!-- look up into different lifecycle methods, and if can CMS can be prefetched? -->
-
-<!-- Content Type ( what you wanna build? - tennis balls brands ) -->
-<!-- shopping card - global - pinia -->
-<!-- Label and Input Components -->
+<!-- TODO -->
 <!-- add integration test? -->
 <!-- add eslint rule for folder import order -->
+<!-- Suspense, how to implement? -->
