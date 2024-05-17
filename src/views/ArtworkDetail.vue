@@ -1,36 +1,49 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute } from 'vue-router'
 
 import { useArtworksStore } from '@/stores/artworks'
 
 const route = useRoute()
+const loading = ref(true)
 
 const artworksStore = useArtworksStore()
 
-console.log({ artworksStore })
+// automatically update when the data depends on changes.
+const department = computed(() => route.params.id)
+const artworks = computed(() => artworksStore.artworkByDepartment(department.value))
 
 onMounted(async () => {
   await artworksStore.fetchArtworks()
+  await artworksStore.fetchAllArtworkDetails()
 
-  const artworkId = parseInt(route.params.id ?? '')
-  if (artworkId) {
-    await artworksStore.fetchArtworksDetails(artworkId)
-  }
+  loading.value = false
 })
 </script>
 
 <template>
-  <main>
+  <div v-if="loading">Loading...</div>
+  <main v-else>
     <h1>Artwork Detail</h1>
 
-    <p>{{ route.params.id }}</p>
-
-    <div v-if="artworksStore.loading">Loading...</div>
-    <ul v-else>
-      <li>{{ artworksStore.allArtworkDetails }}</li>
-      <!-- <img :src="artworksStore.artwork.primaryImage" :alt="artwork.title" /> -->
+    <ul v-if="artworks.length > 0" style="display: flex; flex-direction: column; gap: 3rem">
+      <li v-for="artwork in artworks" :key="artwork.title" style="border-bottom: 1px solid red">
+        <img
+          v-if="artwork.primaryImage"
+          :src="artwork.primaryImage"
+          alt="Artwork Image"
+          style="max-width: 100px; max-height: 100px"
+        />
+        <a v-else :href="artwork.objectURL" target="_blank" rel="noopener noreferrer">
+          View Artwork on MMA
+        </a>
+        <p>{{ artwork.title }}</p>
+        <p>{{ artwork.medium }}</p>
+        <p>{{ artwork.culture }}</p>
+        <p>{{ artwork.period }}</p>
+      </li>
     </ul>
+    <p v-else>No artworks available</p>
   </main>
 </template>
 
@@ -43,3 +56,9 @@ onMounted(async () => {
   }
 }
 </style>
+
+<!-- The rel="noopener noreferrer" is to prevent the newly opened tab from being able to modify the original tab maliciously. 
+  For more information about this vulnerability read the following articles: 
+https://dev.to/ben/the-targetblank-vulnerability-by-example
+https://support.detectify.com/support/solutions/articles/48001048981-external-links-using-target-blank-
+-->

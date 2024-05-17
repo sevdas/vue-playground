@@ -10,6 +10,22 @@ interface Artwork {
   department: string
   title: string
   culture: string
+  primaryImage: string
+  objectName: string
+  period: string
+  portfolio: string
+  artistRole: string
+  artistDisplayName: string
+  artistNationality: string
+  artistBeginDate: string
+  artistEndDate: string
+  artistWikidata_URL: string
+  medium: string
+  city: string
+  county: string
+  region: string
+  repository: string
+
   // ... etc
 }
 
@@ -23,30 +39,30 @@ export const useArtworksStore = defineStore('artworks', {
   state: (): ArtworkCollection => {
     return {
       collection: [],
-      artworkDetails: [],
-      loading: false
+      artworkDetails: []
     }
   },
-
-  // getters:
-  //   allDepartments() {
-  //     const departments = this.artworkDetails.map(({ department }) => department)
-  //     return [...new Set(departments)]
-  //   }
-  // },
 
   getters: {
     allDepartments: (state) => {
       const departments = state.artworkDetails.map(({ department }) => department)
       return [...new Set(departments)]
+    },
+
+    allMediums: (state) => {
+      const mediums = state.artworkDetails.map(({ medium }) => medium)
+      return [...new Set(mediums)]
+    },
+
+    artworkByDepartment: (state) => (department) => {
+      return state.artworkDetails.filter((artwork) => artwork.department === department)
     }
   },
 
   actions: {
     async fetchArtworks() {
       try {
-        this.loading = true
-        const response = await fetch(`${MMABasePath}?departmentIds=10|14|21`)
+        const response = await fetch(`${MMABasePath}`)
 
         if (response?.ok) {
           const collection = await response.json()
@@ -60,15 +76,11 @@ export const useArtworksStore = defineStore('artworks', {
       } catch (error) {
         console.error('Error fetching artworks:', error)
         throw new Error('Failed to fetch artworks')
-      } finally {
-        this.loading = false
       }
     },
 
     async fetchAllArtworkDetails() {
       try {
-        this.loading = true
-
         const allCollectionIds = this.collection.objectIDs
 
         const allArtworkDetailsResponse = await Promise.allSettled(
@@ -96,8 +108,6 @@ export const useArtworksStore = defineStore('artworks', {
       } catch (error) {
         console.error('Error fetching artwork details:', error)
         throw new Error('Failed to fetch artwork details')
-      } finally {
-        this.loading = false
       }
     }
   }

@@ -13,10 +13,7 @@ const artworksStore = useArtworksStore()
 const count = ref(0)
 const searchedValue = ref('')
 const textValue = ref('')
-
 const loading = ref(true)
-
-// const allDepartments = ref([])
 
 const handleClick = () => {
   count.value++
@@ -29,11 +26,6 @@ const clear = () => {
 onMounted(async () => {
   await artworksStore.fetchArtworks()
   await artworksStore.fetchAllArtworkDetails()
-
-  console.log('dep', artworksStore.allDepartments)
-
-  // const departments = artworksStore.artworkDetails.map(({ department }) => department)
-  // allDepartments.value = [...new Set(departments)]
 
   loading.value = false // use reactive load instead of global shared loading ?
 })
