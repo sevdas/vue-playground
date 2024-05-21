@@ -62,3 +62,11 @@ npm run test:e2e -- --debug
 ```sh
 npm run lint
 ```
+
+### Terraform
+
+````provider "aws" {
+  <!-- Terraform will automatically pick up the credentials from the environment variables when you run terraform apply or other Terraform commands. -->
+  region = "eu-west-1"
+}```
+````
