@@ -1,6 +1,7 @@
 <script setup lang="ts">
 interface LabelProps {
   id: string
+  label?: string
   isOptional?: boolean
   ssrLabel?: boolean
 }
