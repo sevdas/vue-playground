@@ -11,7 +11,7 @@ const artworksStore = useArtworksStore()
 
 // automatically update when the data depends on changes.
 const department = computed(() => route.params.id)
-const artworks = computed(() => artworksStore.artworkByDepartment(department.value))
+const artworks = computed(() => artworksStore.artworkByDepartment(department.value as string))
 
 onMounted(async () => {
   await artworksStore.fetchArtworks()
@@ -34,7 +34,7 @@ onMounted(async () => {
           alt="Artwork Image"
           style="max-width: 100px; max-height: 100px"
         />
-        <a v-else :href="artwork.objectURL" target="_blank" rel="noopener noreferrer">
+        <a v-else :href="artwork?.artistWikidata_URL" target="_blank" rel="noopener noreferrer">
           View Artwork on MMA
         </a>
         <p>{{ artwork.title }}</p>

@@ -7,6 +7,7 @@ interface Collection {
 }
 
 interface Artwork {
+  objectID: number
   department: string
   title: string
   culture: string
@@ -30,31 +31,34 @@ interface Artwork {
 }
 
 interface ArtworkCollection {
-  collection: Collection[]
+  collection: Collection
   artworkDetails: Artwork[]
-  loading: boolean
+  loading?: boolean
 }
 
 export const useArtworksStore = defineStore('artworks', {
   state: (): ArtworkCollection => {
     return {
-      collection: [],
+      collection: {
+        objectIDs: [],
+        total: 0
+      },
       artworkDetails: []
     }
   },
 
   getters: {
-    allDepartments: (state) => {
+    allUniqueDepartments: (state) => {
       const departments = state.artworkDetails.map(({ department }) => department)
       return [...new Set(departments)]
     },
 
-    allMediums: (state) => {
+    allUniqueMediums: (state) => {
       const mediums = state.artworkDetails.map(({ medium }) => medium)
       return [...new Set(mediums)]
     },
 
-    artworkByDepartment: (state) => (department) => {
+    artworkByDepartment: (state) => (department: string) => {
       return state.artworkDetails.filter((artwork) => artwork.department === department)
     }
   },
@@ -83,8 +87,10 @@ export const useArtworksStore = defineStore('artworks', {
       try {
         const allCollectionIds = this.collection.objectIDs
 
-        const allArtworkDetailsResponse = await Promise.allSettled(
-          allCollectionIds.map(async (id) => {
+        const allCollectionIdsArray = Object.values(allCollectionIds)
+
+        const allArtworkDetailsResponse = await Promise.all(
+          allCollectionIdsArray.map(async (id) => {
             try {
               const response = await fetch(`${MMABasePath}/${id}`)
 
@@ -99,12 +105,15 @@ export const useArtworksStore = defineStore('artworks', {
           })
         )
 
+        {
+          /* all settled comes with status*/
+        }
         // Filter out fulfilled promises and extract their values
-        const values = allArtworkDetailsResponse
-          .filter(({ status }) => status === 'fulfilled')
-          .map(({ value }) => value)
+        // const values = allArtworkDetailsResponse
+        //   .filter(({ status }) => status === 'fulfilled')
+        //   .map(({ value }) => value)
 
-        this.artworkDetails = values
+        this.artworkDetails = allArtworkDetailsResponse
       } catch (error) {
         console.error('Error fetching artwork details:', error)
         throw new Error('Failed to fetch artwork details')

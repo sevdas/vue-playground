@@ -39,8 +39,8 @@ onMounted(async () => {
   <main v-else>
     <h1>This is a playground page</h1>
 
-    <ul v-if="artworksStore.allDepartments.length > 0">
-      <li v-for="department in artworksStore.allDepartments" :key="department">
+    <ul v-if="artworksStore.allUniqueDepartments.length > 0">
+      <li v-for="department in artworksStore.allUniqueDepartments" :key="department">
         <router-link :to="`/playground/${department}`">{{ department }}</router-link>
       </li>
     </ul>
@@ -77,7 +77,7 @@ onMounted(async () => {
         :modelValue="searchedValue"
         type="search"
         placeholder="Search..."
-        ssrLabel="true"
+        :ssrLabel="true"
         @update:modelValue="(newValue) => (searchedValue = newValue)"
       />
 
